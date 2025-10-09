@@ -1,9 +1,10 @@
-import contact from './models/contact.js';
+// src/services/contacts.js
+import Contact from '../models/contact.js';
 
 export async function findAllContacts() {
-  return contact.find();
+  return Contact.find();
 }
 
 export async function findContactById(id) {
-  return contact.findById(id);
+  return Contact.findById(id);
 }
