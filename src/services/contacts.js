@@ -1,4 +1,4 @@
-import contact from './contact.js';
+import contact from './models/contact.js';
 
 export async function findAllContacts() {
   return contact.find();
