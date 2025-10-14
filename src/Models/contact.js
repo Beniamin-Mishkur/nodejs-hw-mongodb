@@ -17,6 +17,6 @@ const contactSchema = new mongoose.Schema(
 );
 
 // Третій параметр 'contacts' — назва колекції у MongoDB
-const Contact = mongoose.model('Contact', contactSchema, 'contacts');
+const contact = mongoose.model('Contact', contactSchema, 'contacts');
 
-export default Contact;
+export default contact;
