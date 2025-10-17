@@ -13,6 +13,8 @@ export function setupServer() {
   // Регістрація роутів
   app.use('/contacts', contactsRouter);
 
+  app.get('/', (req, res) => res.redirect(302, '/contacts'));
+
   // 404 handler для неіснуючих роутів
   app.use((req, res) => {
     res.status(404).json({ message: 'Not found' });
