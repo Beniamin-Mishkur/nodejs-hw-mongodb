@@ -1,39 +1,35 @@
 import express from 'express';
+import pino from 'pino-http';
 import cors from 'cors';
-import pinoHttp from 'pino-http';
-import contactsRouter from './routes/contacts.js';
+import contactsRouter from './routers/contacts.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
 
-export function setupServer() {
+const PORT = Number(process.env.PORT) || 3000;
+
+export const setupServer = () => {
   const app = express();
-
   app.use(express.json());
   app.use(cors());
-  app.use(pinoHttp());
+  app.use(
+    pino({
+      transport: {
+        target: 'pino-pretty',
+      },
+    }),
+  );
 
-  // Регістрація роутів
+  app.get('/', (req, res) => {
+    res.json({
+      message: 'Welcome back user. Server is running smoothly!',
+    });
+  });
+
   app.use('/contacts', contactsRouter);
+  app.use(notFoundHandler);
+  app.use(errorHandler);
 
-  app.get('/', (req, res) => res.redirect(302, '/contacts'));
-
-  // 404 handler для неіснуючих роутів
-  app.use((req, res) => {
-    res.status(404).json({ message: 'Not found' });
-  });
-
-  // Загальний error handler
-  app.use((err, req, res, next) => {
-    if (req && req.log && typeof req.log.error === 'function') {
-      req.log.error(err);
-    } else {
-      console.error(err);
-    }
-    res.status(500).json({ message: 'Internal Server Error' });
-  });
-
-  const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
-
-  return app;
-}
+};
