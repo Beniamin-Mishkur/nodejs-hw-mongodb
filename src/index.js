@@ -9,7 +9,7 @@ const bootstrap = async () => {
     setupServer();
   } catch (error) {
     console.error(
-      'Failed to start application due to an error:',
+      'Application startup failed because of an error::',
       error.message,
     );
     process.exit(1);
