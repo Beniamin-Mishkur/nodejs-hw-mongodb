@@ -3,7 +3,7 @@ const parseContactType = (type) => {
   const isString = typeof type === 'string';
   if (!isString) return;
 
-  const validTypes = ['work', 'home', 'personal'];
+  const validTypes = ['work', 'home', 'personal', 'general'];
   if (validTypes.includes(type)) return type;
 };
 
