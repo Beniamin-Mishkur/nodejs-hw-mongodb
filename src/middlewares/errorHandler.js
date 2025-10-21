@@ -1,49 +1,48 @@
-import { HttpError } from 'http-errors';
+// src/middlewares/errorHandler.js
+import createHttpError from 'http-errors';
 
 const handleMongooseError = (err) => {
   if (err.name === 'CastError') {
     return {
       status: 404,
       message: 'Not found',
+      data: {},
     };
   }
   if (err.name === 'ValidationError') {
     return {
       status: 400,
       message: 'Bad Request: Validation failed',
+      data: err.errors || {},
     };
   }
 
-  return {
-    status: 500,
-    message: 'Something went wrong',
-  };
+  return null;
 };
 
 export const errorHandler = (err, req, res, next) => {
-  if (err instanceof HttpError) {
-    res.status(err.status).json({
-      status: err.status,
-      message: err.name,
-      data: err,
-    });
-    return;
+  // Mongoose-specific handling
+  const mongooseResult = handleMongooseError(err);
+  if (mongooseResult) {
+    return res.status(mongooseResult.status).json(mongooseResult);
   }
 
-  const { status, message } = handleMongooseError(err);
-
-  if (status !== 500) {
-    res.status(status).json({
-      status: status,
-      message: message,
-      data: err.message,
+  // http-errors (created with createHttpError)
+  if (createHttpError.isHttpError(err)) {
+    const status = err.status || 500;
+    const data = err.data && typeof err.data === 'object' ? err.data : {};
+    return res.status(status).json({
+      status,
+      message: err.message || 'Error',
+      data,
     });
-    return;
   }
 
-  res.status(500).json({
+  // Default fallback
+  console.error('Unhandled error', err);
+  return res.status(500).json({
     status: 500,
     message: 'Something went wrong',
-    data: err.message,
+    data: {},
   });
 };
