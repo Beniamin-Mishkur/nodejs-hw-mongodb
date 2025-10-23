@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-  getContactsController,
+  getAllContactsController,
   getContactByIdController,
   createContactController,
   patchContactController,
@@ -14,9 +14,10 @@ import {
 } from '../validation/contacts.js';
 
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
+import { authenticate } from '../middlewares/authenticate.js';
 const router = Router();
-
-router.get('/', ctrlWrapper(getContactsController));
+router.use(authenticate);
+router.get('/', ctrlWrapper(getAllContactsController));
 router.get('/:contactId', isValidId, ctrlWrapper(getContactByIdController));
 router.post(
   '/',

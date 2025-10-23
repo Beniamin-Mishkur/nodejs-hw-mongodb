@@ -1,3 +1,4 @@
+//src/validation/contacts.js
 import Joi from 'joi';
 
 const stringRule = Joi.string().min(3).max(20);
@@ -7,7 +8,7 @@ export const createContactSchema = Joi.object({
   phoneNumber: stringRule.required(),
   email: Joi.string().email(),
   isFavourite: Joi.boolean(),
-  contactType: Joi.string().valid('work', 'home', 'personal', 'general').required(),
+  contactType: Joi.string().valid('work', 'home', 'personal','general').required(),
 });
 
 export const updateContactSchema = Joi.object({
@@ -15,5 +16,5 @@ export const updateContactSchema = Joi.object({
   phoneNumber: stringRule,
   email: Joi.string().email(),
   isFavourite: Joi.boolean(),
-  contactType: Joi.string().valid('work', 'home', 'personal', 'general'),
+  contactType: Joi.string().valid('work', 'home', 'personal','general'),
 });
