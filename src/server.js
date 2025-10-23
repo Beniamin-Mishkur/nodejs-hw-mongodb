@@ -23,7 +23,7 @@ export const setupServer = () => {
 
   app.get('/', (req, res) => {
     res.json({
-      message: 'Welcome back user. Server is running smoothly',
+      message: 'Hello World! Server is active.',
     });
   });
 

@@ -1,3 +1,4 @@
+// src/controllers/contacts.js
 import createHttpError from 'http-errors';
 import {
   getAllContacts,
@@ -9,6 +10,7 @@ import {
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js'; // <-- ДАДАДЗЕНА
 
 export const getAllContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -34,6 +36,7 @@ export const getAllContactsController = async (req, res) => {
 };
 
 export const getContactByIdController = async (req, res) => {
+  // ... без зменаў
   const { contactId } = req.params;
   const userId = req.user._id;
 
@@ -52,8 +55,20 @@ export const getContactByIdController = async (req, res) => {
 
 export const createContactController = async (req, res) => {
   const userId = req.user._id;
+  const photo = req.file;
 
-  const contact = await createContact(req.body, userId);
+  let photoUrl;
+  if (photo) {
+    photoUrl = await saveFileToCloudinary(photo);
+  }
+
+  const contact = await createContact(
+    {
+      ...req.body,
+      photo: photoUrl,
+    },
+    userId,
+  );
 
   res.status(201).json({
     status: 201,
@@ -65,8 +80,16 @@ export const createContactController = async (req, res) => {
 export const patchContactController = async (req, res) => {
   const { contactId } = req.params;
   const userId = req.user._id;
+  const photo = req.file;
 
-  const result = await updateContact(contactId, req.body, userId);
+  let photoUrl;
+  if (photo) {
+    photoUrl = await saveFileToCloudinary(photo);
+  }
+
+  const payload = photo ? { ...req.body, photo: photoUrl } : req.body;
+
+  const result = await updateContact(contactId, payload, userId);
 
   if (!result) {
     throw createHttpError(404, 'Contact not found');
@@ -74,7 +97,7 @@ export const patchContactController = async (req, res) => {
 
   res.status(200).json({
     status: 200,
-    message: 'Successfully edited a contact!',
+    message: 'Successfully patched a contact!',
     data: result,
   });
 };

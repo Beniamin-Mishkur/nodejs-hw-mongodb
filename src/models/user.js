@@ -1,4 +1,4 @@
-// src/db/models/user.js
+// src/models/user.js
 import { model, Schema } from 'mongoose';
 import { ROLES } from '../constants/index.js';
 
