@@ -1,0 +1,15 @@
+tags: [Contacts]
+summary: Delete contact
+operationId: deleteContact
+description: Delete contact by id.
+security:
+  - bearerAuth: []
+parameters:
+  - $ref: ../../../components/parameters/ContactId.yaml
+responses:
+  '204':
+    description: No Content
+  '401':
+    $ref: ../../../components/responses/Unauthorized.yaml
+  '404':
+    $ref: ../../../components/responses/NotFound.yaml

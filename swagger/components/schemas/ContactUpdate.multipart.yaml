@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./ContactUpdate.json.yaml
+  - type: object
+    properties:
+      photo:
+        type: string
+        format: binary

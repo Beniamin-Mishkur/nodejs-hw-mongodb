@@ -1,0 +1,22 @@
+tags: [Contacts]
+summary: List contacts
+operationId: listContacts
+description: returns contact list.
+security:
+  - bearerAuth: []
+parameters:
+  - $ref: ../../components/parameters/Page.yaml
+  - $ref: ../../components/parameters/PerPage.yaml
+  - $ref: ../../components/parameters/SortBy.yaml
+  - $ref: ../../components/parameters/SortOrder.yaml
+  - $ref: ../../components/parameters/Type.yaml
+  - $ref: ../../components/parameters/IsFavourite.yaml
+responses:
+  '200':
+    description: OK
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/ContactsPage.yaml
+  '401':
+    $ref: ../../components/responses/Unauthorized.yaml

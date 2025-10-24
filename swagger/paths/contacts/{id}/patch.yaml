@@ -1,0 +1,28 @@
+tags: [Contacts]
+summary: Update contact
+operationId: updateContact
+description: Updates contact (JSON or multipart/form-data supported).
+security:
+  - bearerAuth: []
+parameters:
+  - $ref: ../../../components/parameters/ContactId.yaml
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../../components/schemas/ContactUpdate.json.yaml
+    multipart/form-data:
+      schema:
+        $ref: ../../../components/schemas/ContactUpdate.multipart.yaml
+responses:
+  '200':
+    description: OK
+    content:
+      application/json:
+        schema:
+          $ref: ../../../components/schemas/Contact.yaml
+  '401':
+    $ref: ../../../components/responses/Unauthorized.yaml
+  '404':
+    $ref: ../../../components/responses/NotFound.yaml

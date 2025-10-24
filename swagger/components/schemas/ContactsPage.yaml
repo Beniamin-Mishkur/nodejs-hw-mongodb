@@ -1,0 +1,14 @@
+type: object
+properties:
+  data:
+    type: array
+    items:
+      $ref: ./Contact.yaml
+  page: { type: integer, example: 1 }
+  perPage: { type: integer, example: 5 }
+  totalItems: { type: integer, example: 45 }
+  totalPages: { type: integer, example: 7 }
+  hasPreviousPage: { type: boolean, example: false }
+  hasNextPage: { type: boolean, example: true }
+required:
+  [data, page, perPage, totalItems, totalPages, hasPreviousPage, hasNextPage]

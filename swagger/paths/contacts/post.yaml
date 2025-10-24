@@ -1,0 +1,24 @@
+tags: [Contacts]
+summary: Create contact
+operationId: createContact
+description: Creates contact (JSON or multipart/form-data supported).
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../components/schemas/ContactCreate.json.yaml
+    multipart/form-data:
+      schema:
+        $ref: ../../components/schemas/ContactCreate.multipart.yaml
+responses:
+  '201':
+    description: Created
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Contact.yaml
+  '401':
+    $ref: ../../components/responses/Unauthorized.yaml
