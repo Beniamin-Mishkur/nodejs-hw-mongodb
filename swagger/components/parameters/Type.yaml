@@ -1,3 +1,5 @@
 name: type
+description: Type of contact filter
 in: query
+example: personal
 schema: { type: string, enum: [work, home, personal] }

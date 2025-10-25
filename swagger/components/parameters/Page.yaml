@@ -1,3 +1,8 @@
 name: page
 in: query
-schema: { type: integer, minimum: 1, default: 1 }
+description: Page number (starts from 1)
+schema:
+  type: integer
+  minimum: 1
+  default: 1
+example: 1

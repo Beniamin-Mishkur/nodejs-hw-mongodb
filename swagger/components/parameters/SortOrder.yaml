@@ -1,3 +1,4 @@
 name: sortOrder
 in: query
+example: asc
 schema: { type: string, enum: [asc, desc], default: asc }

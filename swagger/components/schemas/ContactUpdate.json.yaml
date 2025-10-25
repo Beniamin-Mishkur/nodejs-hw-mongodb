@@ -1,10 +1,26 @@
 type: object
 properties:
-  name: { type: string }
-  phoneNumber: { type: string }
-  email: { type: string, format: email, nullable: true }
-  isFavourite: { type: boolean }
+  name:
+    type: string
+  phoneNumber:
+    type: string
+  email:
+    type: string
+    format: email
+    nullable: true
+  isFavourite:
+    type: boolean
   contactType:
     type: string
-    enum: [work, home, personal]
+    enum:
+      - work
+      - home
+      - personal
 additionalProperties: false
+
+example:
+  name: "Jane Doe"
+  phoneNumber: "+380501234568"
+  email: "jane@example.com"
+  isFavourite: true
+  contactType: "work"

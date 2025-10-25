@@ -10,11 +10,11 @@ properties:
     example: John Doe
   phoneNumber:
     type: string
-    example: +380991112233
+    example: "+380991112233"
   email:
     type: [string, 'null']
     format: email
-    example: john@example.com
+    example: "john@example.com"
   isFavourite:
     type: boolean
     default: false

@@ -14,7 +14,7 @@
       "url": "http://localhost:3000"
     },
     {
-      "url": "https://nodejs-hw-mongodb-hl9a.onrender.com"
+      "url": "https://swagger-rw4g.onrender.com"
     }
   ],
   "tags": [
@@ -248,24 +248,29 @@
       "Page": {
         "name": "page",
         "in": "query",
+        "description": "Page number (starts from 1)",
         "schema": {
           "type": "integer",
           "minimum": 1,
           "default": 1
-        }
+        },
+        "example": 1
       },
       "PerPage": {
-        "name": "page",
+        "name": "perPage",
         "in": "query",
+        "description": "Number of items per page",
         "schema": {
           "type": "integer",
           "minimum": 1,
-          "default": 1
-        }
+          "default": 10
+        },
+        "example": 10
       },
       "SortBy": {
         "name": "sortBy",
         "in": "query",
+        "example": "name",
         "schema": {
           "type": "string",
           "enum": [
@@ -280,6 +285,7 @@
       "SortOrder": {
         "name": "sortOrder",
         "in": "query",
+        "example": "asc",
         "schema": {
           "type": "string",
           "enum": [
@@ -291,7 +297,9 @@
       },
       "Type": {
         "name": "type",
+        "description": "Type of contact filter",
         "in": "query",
+        "example": "personal",
         "schema": {
           "type": "string",
           "enum": [
@@ -335,7 +343,7 @@
           },
           "phoneNumber": {
             "type": "string",
-            "example": 380991112233
+            "example": "+380991112233"
           },
           "email": {
             "type": [
@@ -476,7 +484,14 @@
           "name",
           "phoneNumber",
           "contactType"
-        ]
+        ],
+        "example": {
+          "name": "John Doe",
+          "phoneNumber": "+380501234567",
+          "email": "john@example.com",
+          "isFavourite": false,
+          "contactType": "personal"
+        }
       },
       "ContactCreate.multipart": {
         "type": "object",
@@ -539,7 +554,14 @@
             ]
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "example": {
+          "name": "Jane Doe",
+          "phoneNumber": "+380501234568",
+          "email": "jane@example.com",
+          "isFavourite": true,
+          "contactType": "work"
+        }
       },
       "ContactUpdate.multipart": {
         "allOf": [

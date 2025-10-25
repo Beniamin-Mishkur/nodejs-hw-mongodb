@@ -1,4 +1,5 @@
 name: sortBy
 in: query
+example: name
 schema:
   { type: string, enum: [name, email, phoneNumber, createdAt], default: name }
