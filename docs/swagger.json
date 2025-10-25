@@ -7,14 +7,14 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "description": "\"REST API for managing contacts with authentication, pagination, and photo uploads.\n"
+    "description": "REST API for managing contacts with authentication, pagination, and photo uploads."
   },
   "servers": [
     {
       "url": "http://localhost:3000"
     },
     {
-      "url": "https://swagger-rw4g.onrender.com"
+      "url": "https://nodejs-hw-mongodb-hl9a.onrender.com"
     }
   ],
   "tags": [
