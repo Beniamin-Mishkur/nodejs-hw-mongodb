@@ -6,7 +6,7 @@ import router from './routers/index.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 
-// Допоміжні імпорти для Swagger UI
+// Swagger UI imports
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
 import yaml from 'js-yaml';
@@ -33,22 +33,48 @@ export const setupServer = () => {
     });
   });
 
-  // Swagger UI route: /api-docs
+  // --- Swagger UI route: /api-docs ---
+  // Prefer the bundled JSON (docs/swagger.json) produced by `npm run build-docs`.
+  // If it's not available, fallback to docs/openapi.yaml.
   try {
-    const openapiPath = path.join(process.cwd(), 'docs', 'openapi.yaml');
-    if (fs.existsSync(openapiPath)) {
-      const openapiYaml = fs.readFileSync(openapiPath, 'utf8');
-      const openapiDocument = yaml.load(openapiYaml);
-      app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiDocument));
-      console.log('Swagger UI available at /api-docs');
+    const projectDocsDir = path.join(process.cwd(), 'docs');
+    const swaggerJsonPath = path.join(projectDocsDir, 'swagger.json');
+    const openapiYamlPath = path.join(projectDocsDir, 'openapi.yaml');
+
+    let swaggerDocument = null;
+
+    if (fs.existsSync(swaggerJsonPath)) {
+      // Use pre-bundled swagger.json (recommended for swagger-ui)
+      const raw = fs.readFileSync(swaggerJsonPath, 'utf8');
+      swaggerDocument = JSON.parse(raw);
+      console.log('Loaded docs/swagger.json for Swagger UI');
+    } else if (fs.existsSync(openapiYamlPath)) {
+      // Fallback: parse openapi.yaml (may contain $ref to other files)
+      const rawYaml = fs.readFileSync(openapiYamlPath, 'utf8');
+      swaggerDocument = yaml.load(rawYaml);
+      console.log('Loaded docs/openapi.yaml for Swagger UI (fallback)');
     } else {
       console.warn(
-        `OpenAPI file not found at ${openapiPath}. /api-docs will be unavailable.`,
+        'No API docs found (docs/swagger.json or docs/openapi.yaml)',
       );
+    }
+
+    if (swaggerDocument) {
+      // Optional: swagger-ui options
+      const swaggerOptions = {
+   
+      };
+      app.use(
+        '/api-docs',
+        swaggerUi.serve,
+        swaggerUi.setup(swaggerDocument, swaggerOptions),
+      );
+      console.log('Swagger UI available at /api-docs');
     }
   } catch (err) {
     console.warn('Cannot load OpenAPI doc for /api-docs:', err.message);
   }
+  // --- end Swagger setup ---
 
   app.use(router);
   app.use(notFoundHandler);
